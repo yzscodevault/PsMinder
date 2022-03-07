@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PsMinderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CredentialTable">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MedicineTable">
+          <Key>
+            <PropertyRef Name="MedicineID" />
+          </Key>
+          <Property Name="MedicineID" Type="int" Nullable="false" />
+          <Property Name="MedicineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DailyConsumption" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+          <Property Name="CurrentStock" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+          <Property Name="UnitID" Type="int" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProjectedRestockDate" Type="date" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="PetTable">
+          <Key>
+            <PropertyRef Name="PetID" />
+          </Key>
+          <Property Name="PetID" Type="int" Nullable="false" />
+          <Property Name="PetImage" Type="image" />
+          <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PetAge" Type="tinyint" />
+          <Property Name="PetWeight" Type="float" />
+          <Property Name="PetColor" Type="nvarchar" MaxLength="50" />
+          <Property Name="PetSpecies" Type="nvarchar" MaxLength="50" />
+          <Property Name="PetBreed" Type="nvarchar" MaxLength="50" />
+          <Property Name="Owner" Type="nvarchar" MaxLength="50" />
+          <Property Name="OwnerContact" Type="nvarchar" MaxLength="50" />
+          <Property Name="Note" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="PrescriptionTable">
+          <Key>
+            <PropertyRef Name="PrescriptionID" />
+          </Key>
+          <Property Name="PrescriptionID" Type="int" Nullable="false" />
+          <Property Name="PrescriptionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PetID" Type="int" Nullable="false" />
+          <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MedicineID" Type="int" Nullable="false" />
+          <Property Name="MedicineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DosagePerDay" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+          <Property Name="UnitID" Type="int" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="VeterinaryName" Type="nvarchar" MaxLength="50" />
+          <Property Name="VeterinaryPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="ReminderTable">
+          <Key>
+            <PropertyRef Name="ReminderID" />
+          </Key>
+          <Property Name="ReminderID" Type="int" Nullable="false" />
+          <Property Name="PrescriptionID" Type="int" Nullable="false" />
+          <Property Name="PrescriptionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PetID" Type="int" Nullable="false" />
+          <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MedicineID" Type="int" Nullable="false" />
+          <Property Name="MedicineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProjectedRestockDate" Type="date" Nullable="false" />
+          <Property Name="NextReminderDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnitTable">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="int" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_MedicineTable_UnitTable">
+          <End Role="UnitTable" Type="Self.UnitTable" Multiplicity="1" />
+          <End Role="MedicineTable" Type="Self.MedicineTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnitTable">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="MedicineTable">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrescriptionTable_MedicineTable">
+          <End Role="MedicineTable" Type="Self.MedicineTable" Multiplicity="1" />
+          <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicineTable">
+              <PropertyRef Name="MedicineID" />
+            </Principal>
+            <Dependent Role="PrescriptionTable">
+              <PropertyRef Name="MedicineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrescriptionTable_PetTable">
+          <End Role="PetTable" Type="Self.PetTable" Multiplicity="1" />
+          <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetTable">
+              <PropertyRef Name="PetID" />
+            </Principal>
+            <Dependent Role="PrescriptionTable">
+              <PropertyRef Name="PetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrescriptionTable_UnitTable">
+          <End Role="UnitTable" Type="Self.UnitTable" Multiplicity="1" />
+          <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnitTable">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="PrescriptionTable">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReminderTable_MedicineTable">
+          <End Role="MedicineTable" Type="Self.MedicineTable" Multiplicity="1" />
+          <End Role="ReminderTable" Type="Self.ReminderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicineTable">
+              <PropertyRef Name="MedicineID" />
+            </Principal>
+            <Dependent Role="ReminderTable">
+              <PropertyRef Name="MedicineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReminderTable_PetTable">
+          <End Role="PetTable" Type="Self.PetTable" Multiplicity="1" />
+          <End Role="ReminderTable" Type="Self.ReminderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetTable">
+              <PropertyRef Name="PetID" />
+            </Principal>
+            <Dependent Role="ReminderTable">
+              <PropertyRef Name="PetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReminderTable_PrescriptionTable">
+          <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="1" />
+          <End Role="ReminderTable" Type="Self.ReminderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrescriptionTable">
+              <PropertyRef Name="PrescriptionID" />
+            </Principal>
+            <Dependent Role="ReminderTable">
+              <PropertyRef Name="PrescriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PsMinderModelStoreContainer">
+          <EntitySet Name="CredentialTable" EntityType="Self.CredentialTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MedicineTable" EntityType="Self.MedicineTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PetTable" EntityType="Self.PetTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrescriptionTable" EntityType="Self.PrescriptionTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReminderTable" EntityType="Self.ReminderTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UnitTable" EntityType="Self.UnitTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MedicineTable_UnitTable" Association="Self.FK_MedicineTable_UnitTable">
+            <End Role="UnitTable" EntitySet="UnitTable" />
+            <End Role="MedicineTable" EntitySet="MedicineTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrescriptionTable_MedicineTable" Association="Self.FK_PrescriptionTable_MedicineTable">
+            <End Role="MedicineTable" EntitySet="MedicineTable" />
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrescriptionTable_PetTable" Association="Self.FK_PrescriptionTable_PetTable">
+            <End Role="PetTable" EntitySet="PetTable" />
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrescriptionTable_UnitTable" Association="Self.FK_PrescriptionTable_UnitTable">
+            <End Role="UnitTable" EntitySet="UnitTable" />
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReminderTable_MedicineTable" Association="Self.FK_ReminderTable_MedicineTable">
+            <End Role="MedicineTable" EntitySet="MedicineTable" />
+            <End Role="ReminderTable" EntitySet="ReminderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReminderTable_PetTable" Association="Self.FK_ReminderTable_PetTable">
+            <End Role="PetTable" EntitySet="PetTable" />
+            <End Role="ReminderTable" EntitySet="ReminderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReminderTable_PrescriptionTable" Association="Self.FK_ReminderTable_PrescriptionTable">
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+            <End Role="ReminderTable" EntitySet="ReminderTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PsMinderModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PsMinderEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CredentialTables" EntityType="PsMinderModel.CredentialTable" />
+          <EntitySet Name="MedicineTables" EntityType="PsMinderModel.MedicineTable" />
+          <EntitySet Name="PetTables" EntityType="PsMinderModel.PetTable" />
+          <EntitySet Name="PrescriptionTables" EntityType="PsMinderModel.PrescriptionTable" />
+          <EntitySet Name="ReminderTables" EntityType="PsMinderModel.ReminderTable" />
+          <EntitySet Name="UnitTables" EntityType="PsMinderModel.UnitTable" />
+          <AssociationSet Name="FK_MedicineTable_UnitTable" Association="PsMinderModel.FK_MedicineTable_UnitTable">
+            <End Role="UnitTable" EntitySet="UnitTables" />
+            <End Role="MedicineTable" EntitySet="MedicineTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrescriptionTable_MedicineTable" Association="PsMinderModel.FK_PrescriptionTable_MedicineTable">
+            <End Role="MedicineTable" EntitySet="MedicineTables" />
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReminderTable_MedicineTable" Association="PsMinderModel.FK_ReminderTable_MedicineTable">
+            <End Role="MedicineTable" EntitySet="MedicineTables" />
+            <End Role="ReminderTable" EntitySet="ReminderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrescriptionTable_PetTable" Association="PsMinderModel.FK_PrescriptionTable_PetTable">
+            <End Role="PetTable" EntitySet="PetTables" />
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReminderTable_PetTable" Association="PsMinderModel.FK_ReminderTable_PetTable">
+            <End Role="PetTable" EntitySet="PetTables" />
+            <End Role="ReminderTable" EntitySet="ReminderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PrescriptionTable_UnitTable" Association="PsMinderModel.FK_PrescriptionTable_UnitTable">
+            <End Role="UnitTable" EntitySet="UnitTables" />
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReminderTable_PrescriptionTable" Association="PsMinderModel.FK_ReminderTable_PrescriptionTable">
+            <End Role="PrescriptionTable" EntitySet="PrescriptionTables" />
+            <End Role="ReminderTable" EntitySet="ReminderTables" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CredentialTable">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MedicineTable">
+          <Key>
+            <PropertyRef Name="MedicineID" />
+          </Key>
+          <Property Name="MedicineID" Type="Int32" Nullable="false" />
+          <Property Name="MedicineName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DailyConsumption" Type="Decimal" Nullable="false" Precision="12" Scale="6" />
+          <Property Name="CurrentStock" Type="Decimal" Nullable="false" Precision="12" Scale="6" />
+          <Property Name="UnitID" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectedRestockDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Note" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UnitTable" Relationship="PsMinderModel.FK_MedicineTable_UnitTable" FromRole="MedicineTable" ToRole="UnitTable" />
+          <NavigationProperty Name="PrescriptionTables" Relationship="PsMinderModel.FK_PrescriptionTable_MedicineTable" FromRole="MedicineTable" ToRole="PrescriptionTable" />
+          <NavigationProperty Name="ReminderTables" Relationship="PsMinderModel.FK_ReminderTable_MedicineTable" FromRole="MedicineTable" ToRole="ReminderTable" />
+        </EntityType>
+        <EntityType Name="PetTable">
+          <Key>
+            <PropertyRef Name="PetID" />
+          </Key>
+          <Property Name="PetID" Type="Int32" Nullable="false" />
+          <Property Name="PetImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="PetName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PetAge" Type="Byte" />
+          <Property Name="PetWeight" Type="Double" />
+          <Property Name="PetColor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PetSpecies" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PetBreed" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Owner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PrescriptionTables" Relationship="PsMinderModel.FK_PrescriptionTable_PetTable" FromRole="PetTable" ToRole="PrescriptionTable" />
+          <NavigationProperty Name="ReminderTables" Relationship="PsMinderModel.FK_ReminderTable_PetTable" FromRole="PetTable" ToRole="ReminderTable" />
+        </EntityType>
+        <EntityType Name="PrescriptionTable">
+          <Key>
+            <PropertyRef Name="PrescriptionID" />
+          </Key>
+          <Property Name="PrescriptionID" Type="Int32" Nullable="false" />
+          <Property Name="PrescriptionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PetID" Type="Int32" Nullable="false" />
+          <Property Name="PetName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MedicineID" Type="Int32" Nullable="false" />
+          <Property Name="MedicineName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DosagePerDay" Type="Decimal" Nullable="false" Precision="12" Scale="6" />
+          <Property Name="UnitID" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="VeterinaryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VeterinaryPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MedicineTable" Relationship="PsMinderModel.FK_PrescriptionTable_MedicineTable" FromRole="PrescriptionTable" ToRole="MedicineTable" />
+          <NavigationProperty Name="PetTable" Relationship="PsMinderModel.FK_PrescriptionTable_PetTable" FromRole="PrescriptionTable" ToRole="PetTable" />
+          <NavigationProperty Name="UnitTable" Relationship="PsMinderModel.FK_PrescriptionTable_UnitTable" FromRole="PrescriptionTable" ToRole="UnitTable" />
+          <NavigationProperty Name="ReminderTables" Relationship="PsMinderModel.FK_ReminderTable_PrescriptionTable" FromRole="PrescriptionTable" ToRole="ReminderTable" />
+        </EntityType>
+        <EntityType Name="ReminderTable">
+          <Key>
+            <PropertyRef Name="ReminderID" />
+          </Key>
+          <Property Name="ReminderID" Type="Int32" Nullable="false" />
+          <Property Name="PrescriptionID" Type="Int32" Nullable="false" />
+          <Property Name="PrescriptionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PetID" Type="Int32" Nullable="false" />
+          <Property Name="PetName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MedicineID" Type="Int32" Nullable="false" />
+          <Property Name="MedicineName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectedRestockDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NextReminderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="MedicineTable" Relationship="PsMinderModel.FK_ReminderTable_MedicineTable" FromRole="ReminderTable" ToRole="MedicineTable" />
+          <NavigationProperty Name="PetTable" Relationship="PsMinderModel.FK_ReminderTable_PetTable" FromRole="ReminderTable" ToRole="PetTable" />
+          <NavigationProperty Name="PrescriptionTable" Relationship="PsMinderModel.FK_ReminderTable_PrescriptionTable" FromRole="ReminderTable" ToRole="PrescriptionTable" />
+        </EntityType>
+        <EntityType Name="UnitTable">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MedicineTables" Relationship="PsMinderModel.FK_MedicineTable_UnitTable" FromRole="UnitTable" ToRole="MedicineTable" />
+          <NavigationProperty Name="PrescriptionTables" Relationship="PsMinderModel.FK_PrescriptionTable_UnitTable" FromRole="UnitTable" ToRole="PrescriptionTable" />
+        </EntityType>
+        <Association Name="FK_MedicineTable_UnitTable">
+          <End Type="PsMinderModel.UnitTable" Role="UnitTable" Multiplicity="1" />
+          <End Type="PsMinderModel.MedicineTable" Role="MedicineTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnitTable">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="MedicineTable">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrescriptionTable_MedicineTable">
+          <End Type="PsMinderModel.MedicineTable" Role="MedicineTable" Multiplicity="1" />
+          <End Type="PsMinderModel.PrescriptionTable" Role="PrescriptionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicineTable">
+              <PropertyRef Name="MedicineID" />
+            </Principal>
+            <Dependent Role="PrescriptionTable">
+              <PropertyRef Name="MedicineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReminderTable_MedicineTable">
+          <End Type="PsMinderModel.MedicineTable" Role="MedicineTable" Multiplicity="1" />
+          <End Type="PsMinderModel.ReminderTable" Role="ReminderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicineTable">
+              <PropertyRef Name="MedicineID" />
+            </Principal>
+            <Dependent Role="ReminderTable">
+              <PropertyRef Name="MedicineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrescriptionTable_PetTable">
+          <End Type="PsMinderModel.PetTable" Role="PetTable" Multiplicity="1" />
+          <End Type="PsMinderModel.PrescriptionTable" Role="PrescriptionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetTable">
+              <PropertyRef Name="PetID" />
+            </Principal>
+            <Dependent Role="PrescriptionTable">
+              <PropertyRef Name="PetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReminderTable_PetTable">
+          <End Type="PsMinderModel.PetTable" Role="PetTable" Multiplicity="1" />
+          <End Type="PsMinderModel.ReminderTable" Role="ReminderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PetTable">
+              <PropertyRef Name="PetID" />
+            </Principal>
+            <Dependent Role="ReminderTable">
+              <PropertyRef Name="PetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PrescriptionTable_UnitTable">
+          <End Type="PsMinderModel.UnitTable" Role="UnitTable" Multiplicity="1" />
+          <End Type="PsMinderModel.PrescriptionTable" Role="PrescriptionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UnitTable">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="PrescriptionTable">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReminderTable_PrescriptionTable">
+          <End Type="PsMinderModel.PrescriptionTable" Role="PrescriptionTable" Multiplicity="1" />
+          <End Type="PsMinderModel.ReminderTable" Role="ReminderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrescriptionTable">
+              <PropertyRef Name="PrescriptionID" />
+            </Principal>
+            <Dependent Role="ReminderTable">
+              <PropertyRef Name="PrescriptionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PsMinderModelStoreContainer" CdmEntityContainer="PsMinderEntities">
+          <EntitySetMapping Name="CredentialTables">
+            <EntityTypeMapping TypeName="PsMinderModel.CredentialTable">
+              <MappingFragment StoreEntitySet="CredentialTable">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MedicineTables">
+            <EntityTypeMapping TypeName="PsMinderModel.MedicineTable">
+              <MappingFragment StoreEntitySet="MedicineTable">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="ProjectedRestockDate" ColumnName="ProjectedRestockDate" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="CurrentStock" ColumnName="CurrentStock" />
+                <ScalarProperty Name="DailyConsumption" ColumnName="DailyConsumption" />
+                <ScalarProperty Name="MedicineName" ColumnName="MedicineName" />
+                <ScalarProperty Name="MedicineID" ColumnName="MedicineID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PetTables">
+            <EntityTypeMapping TypeName="PsMinderModel.PetTable">
+              <MappingFragment StoreEntitySet="PetTable">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="OwnerContact" ColumnName="OwnerContact" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="PetBreed" ColumnName="PetBreed" />
+                <ScalarProperty Name="PetSpecies" ColumnName="PetSpecies" />
+                <ScalarProperty Name="PetColor" ColumnName="PetColor" />
+                <ScalarProperty Name="PetWeight" ColumnName="PetWeight" />
+                <ScalarProperty Name="PetAge" ColumnName="PetAge" />
+                <ScalarProperty Name="PetName" ColumnName="PetName" />
+                <ScalarProperty Name="PetImage" ColumnName="PetImage" />
+                <ScalarProperty Name="PetID" ColumnName="PetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrescriptionTables">
+            <EntityTypeMapping TypeName="PsMinderModel.PrescriptionTable">
+              <MappingFragment StoreEntitySet="PrescriptionTable">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="VeterinaryPhone" ColumnName="VeterinaryPhone" />
+                <ScalarProperty Name="VeterinaryName" ColumnName="VeterinaryName" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="DosagePerDay" ColumnName="DosagePerDay" />
+                <ScalarProperty Name="MedicineName" ColumnName="MedicineName" />
+                <ScalarProperty Name="MedicineID" ColumnName="MedicineID" />
+                <ScalarProperty Name="PetName" ColumnName="PetName" />
+                <ScalarProperty Name="PetID" ColumnName="PetID" />
+                <ScalarProperty Name="PrescriptionName" ColumnName="PrescriptionName" />
+                <ScalarProperty Name="PrescriptionID" ColumnName="PrescriptionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReminderTables">
+            <EntityTypeMapping TypeName="PsMinderModel.ReminderTable">
+              <MappingFragment StoreEntitySet="ReminderTable">
+                <ScalarProperty Name="NextReminderDate" ColumnName="NextReminderDate" />
+                <ScalarProperty Name="ProjectedRestockDate" ColumnName="ProjectedRestockDate" />
+                <ScalarProperty Name="MedicineName" ColumnName="MedicineName" />
+                <ScalarProperty Name="MedicineID" ColumnName="MedicineID" />
+                <ScalarProperty Name="PetName" ColumnName="PetName" />
+                <ScalarProperty Name="PetID" ColumnName="PetID" />
+                <ScalarProperty Name="PrescriptionName" ColumnName="PrescriptionName" />
+                <ScalarProperty Name="PrescriptionID" ColumnName="PrescriptionID" />
+                <ScalarProperty Name="ReminderID" ColumnName="ReminderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitTables">
+            <EntityTypeMapping TypeName="PsMinderModel.UnitTable">
+              <MappingFragment StoreEntitySet="UnitTable">
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

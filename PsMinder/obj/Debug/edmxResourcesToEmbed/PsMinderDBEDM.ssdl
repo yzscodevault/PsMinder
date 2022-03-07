@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PsMinderModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CredentialTable">
+    <Key>
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MedicineTable">
+    <Key>
+      <PropertyRef Name="MedicineID" />
+    </Key>
+    <Property Name="MedicineID" Type="int" Nullable="false" />
+    <Property Name="MedicineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DailyConsumption" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+    <Property Name="CurrentStock" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+    <Property Name="UnitID" Type="int" Nullable="false" />
+    <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProjectedRestockDate" Type="date" Nullable="false" />
+    <Property Name="Note" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="PetTable">
+    <Key>
+      <PropertyRef Name="PetID" />
+    </Key>
+    <Property Name="PetID" Type="int" Nullable="false" />
+    <Property Name="PetImage" Type="image" />
+    <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PetAge" Type="tinyint" />
+    <Property Name="PetWeight" Type="float" />
+    <Property Name="PetColor" Type="nvarchar" MaxLength="50" />
+    <Property Name="PetSpecies" Type="nvarchar" MaxLength="50" />
+    <Property Name="PetBreed" Type="nvarchar" MaxLength="50" />
+    <Property Name="Owner" Type="nvarchar" MaxLength="50" />
+    <Property Name="OwnerContact" Type="nvarchar" MaxLength="50" />
+    <Property Name="Note" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="PrescriptionTable">
+    <Key>
+      <PropertyRef Name="PrescriptionID" />
+    </Key>
+    <Property Name="PrescriptionID" Type="int" Nullable="false" />
+    <Property Name="PrescriptionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PetID" Type="int" Nullable="false" />
+    <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MedicineID" Type="int" Nullable="false" />
+    <Property Name="MedicineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DosagePerDay" Type="decimal" Precision="12" Scale="6" Nullable="false" />
+    <Property Name="UnitID" Type="int" Nullable="false" />
+    <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="EndDate" Type="date" Nullable="false" />
+    <Property Name="VeterinaryName" Type="nvarchar" MaxLength="50" />
+    <Property Name="VeterinaryPhone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="ReminderTable">
+    <Key>
+      <PropertyRef Name="ReminderID" />
+    </Key>
+    <Property Name="ReminderID" Type="int" Nullable="false" />
+    <Property Name="PrescriptionID" Type="int" Nullable="false" />
+    <Property Name="PrescriptionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PetID" Type="int" Nullable="false" />
+    <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="MedicineID" Type="int" Nullable="false" />
+    <Property Name="MedicineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ProjectedRestockDate" Type="date" Nullable="false" />
+    <Property Name="NextReminderDate" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UnitTable">
+    <Key>
+      <PropertyRef Name="UnitID" />
+    </Key>
+    <Property Name="UnitID" Type="int" Nullable="false" />
+    <Property Name="Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_MedicineTable_UnitTable">
+    <End Role="UnitTable" Type="Self.UnitTable" Multiplicity="1" />
+    <End Role="MedicineTable" Type="Self.MedicineTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UnitTable">
+        <PropertyRef Name="UnitID" />
+      </Principal>
+      <Dependent Role="MedicineTable">
+        <PropertyRef Name="UnitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PrescriptionTable_MedicineTable">
+    <End Role="MedicineTable" Type="Self.MedicineTable" Multiplicity="1" />
+    <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MedicineTable">
+        <PropertyRef Name="MedicineID" />
+      </Principal>
+      <Dependent Role="PrescriptionTable">
+        <PropertyRef Name="MedicineID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PrescriptionTable_PetTable">
+    <End Role="PetTable" Type="Self.PetTable" Multiplicity="1" />
+    <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PetTable">
+        <PropertyRef Name="PetID" />
+      </Principal>
+      <Dependent Role="PrescriptionTable">
+        <PropertyRef Name="PetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PrescriptionTable_UnitTable">
+    <End Role="UnitTable" Type="Self.UnitTable" Multiplicity="1" />
+    <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UnitTable">
+        <PropertyRef Name="UnitID" />
+      </Principal>
+      <Dependent Role="PrescriptionTable">
+        <PropertyRef Name="UnitID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReminderTable_MedicineTable">
+    <End Role="MedicineTable" Type="Self.MedicineTable" Multiplicity="1" />
+    <End Role="ReminderTable" Type="Self.ReminderTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MedicineTable">
+        <PropertyRef Name="MedicineID" />
+      </Principal>
+      <Dependent Role="ReminderTable">
+        <PropertyRef Name="MedicineID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReminderTable_PetTable">
+    <End Role="PetTable" Type="Self.PetTable" Multiplicity="1" />
+    <End Role="ReminderTable" Type="Self.ReminderTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PetTable">
+        <PropertyRef Name="PetID" />
+      </Principal>
+      <Dependent Role="ReminderTable">
+        <PropertyRef Name="PetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReminderTable_PrescriptionTable">
+    <End Role="PrescriptionTable" Type="Self.PrescriptionTable" Multiplicity="1" />
+    <End Role="ReminderTable" Type="Self.ReminderTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PrescriptionTable">
+        <PropertyRef Name="PrescriptionID" />
+      </Principal>
+      <Dependent Role="ReminderTable">
+        <PropertyRef Name="PrescriptionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PsMinderModelStoreContainer">
+    <EntitySet Name="CredentialTable" EntityType="Self.CredentialTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MedicineTable" EntityType="Self.MedicineTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PetTable" EntityType="Self.PetTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PrescriptionTable" EntityType="Self.PrescriptionTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReminderTable" EntityType="Self.ReminderTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UnitTable" EntityType="Self.UnitTable" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_MedicineTable_UnitTable" Association="Self.FK_MedicineTable_UnitTable">
+      <End Role="UnitTable" EntitySet="UnitTable" />
+      <End Role="MedicineTable" EntitySet="MedicineTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PrescriptionTable_MedicineTable" Association="Self.FK_PrescriptionTable_MedicineTable">
+      <End Role="MedicineTable" EntitySet="MedicineTable" />
+      <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PrescriptionTable_PetTable" Association="Self.FK_PrescriptionTable_PetTable">
+      <End Role="PetTable" EntitySet="PetTable" />
+      <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PrescriptionTable_UnitTable" Association="Self.FK_PrescriptionTable_UnitTable">
+      <End Role="UnitTable" EntitySet="UnitTable" />
+      <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReminderTable_MedicineTable" Association="Self.FK_ReminderTable_MedicineTable">
+      <End Role="MedicineTable" EntitySet="MedicineTable" />
+      <End Role="ReminderTable" EntitySet="ReminderTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReminderTable_PetTable" Association="Self.FK_ReminderTable_PetTable">
+      <End Role="PetTable" EntitySet="PetTable" />
+      <End Role="ReminderTable" EntitySet="ReminderTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReminderTable_PrescriptionTable" Association="Self.FK_ReminderTable_PrescriptionTable">
+      <End Role="PrescriptionTable" EntitySet="PrescriptionTable" />
+      <End Role="ReminderTable" EntitySet="ReminderTable" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

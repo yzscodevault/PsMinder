@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PsMinderModelStoreContainer" CdmEntityContainer="PsMinderEntities">
+    <EntitySetMapping Name="CredentialTables">
+      <EntityTypeMapping TypeName="PsMinderModel.CredentialTable">
+        <MappingFragment StoreEntitySet="CredentialTable">
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MedicineTables">
+      <EntityTypeMapping TypeName="PsMinderModel.MedicineTable">
+        <MappingFragment StoreEntitySet="MedicineTable">
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="ProjectedRestockDate" ColumnName="ProjectedRestockDate" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+          <ScalarProperty Name="CurrentStock" ColumnName="CurrentStock" />
+          <ScalarProperty Name="DailyConsumption" ColumnName="DailyConsumption" />
+          <ScalarProperty Name="MedicineName" ColumnName="MedicineName" />
+          <ScalarProperty Name="MedicineID" ColumnName="MedicineID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PetTables">
+      <EntityTypeMapping TypeName="PsMinderModel.PetTable">
+        <MappingFragment StoreEntitySet="PetTable">
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="OwnerContact" ColumnName="OwnerContact" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="PetBreed" ColumnName="PetBreed" />
+          <ScalarProperty Name="PetSpecies" ColumnName="PetSpecies" />
+          <ScalarProperty Name="PetColor" ColumnName="PetColor" />
+          <ScalarProperty Name="PetWeight" ColumnName="PetWeight" />
+          <ScalarProperty Name="PetAge" ColumnName="PetAge" />
+          <ScalarProperty Name="PetName" ColumnName="PetName" />
+          <ScalarProperty Name="PetImage" ColumnName="PetImage" />
+          <ScalarProperty Name="PetID" ColumnName="PetID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PrescriptionTables">
+      <EntityTypeMapping TypeName="PsMinderModel.PrescriptionTable">
+        <MappingFragment StoreEntitySet="PrescriptionTable">
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="VeterinaryPhone" ColumnName="VeterinaryPhone" />
+          <ScalarProperty Name="VeterinaryName" ColumnName="VeterinaryName" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+          <ScalarProperty Name="DosagePerDay" ColumnName="DosagePerDay" />
+          <ScalarProperty Name="MedicineName" ColumnName="MedicineName" />
+          <ScalarProperty Name="MedicineID" ColumnName="MedicineID" />
+          <ScalarProperty Name="PetName" ColumnName="PetName" />
+          <ScalarProperty Name="PetID" ColumnName="PetID" />
+          <ScalarProperty Name="PrescriptionName" ColumnName="PrescriptionName" />
+          <ScalarProperty Name="PrescriptionID" ColumnName="PrescriptionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReminderTables">
+      <EntityTypeMapping TypeName="PsMinderModel.ReminderTable">
+        <MappingFragment StoreEntitySet="ReminderTable">
+          <ScalarProperty Name="NextReminderDate" ColumnName="NextReminderDate" />
+          <ScalarProperty Name="ProjectedRestockDate" ColumnName="ProjectedRestockDate" />
+          <ScalarProperty Name="MedicineName" ColumnName="MedicineName" />
+          <ScalarProperty Name="MedicineID" ColumnName="MedicineID" />
+          <ScalarProperty Name="PetName" ColumnName="PetName" />
+          <ScalarProperty Name="PetID" ColumnName="PetID" />
+          <ScalarProperty Name="PrescriptionName" ColumnName="PrescriptionName" />
+          <ScalarProperty Name="PrescriptionID" ColumnName="PrescriptionID" />
+          <ScalarProperty Name="ReminderID" ColumnName="ReminderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UnitTables">
+      <EntityTypeMapping TypeName="PsMinderModel.UnitTable">
+        <MappingFragment StoreEntitySet="UnitTable">
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
